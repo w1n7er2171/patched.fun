@@ -96,7 +96,7 @@ a {
   gap: 6px;
 }
 
-.cart-item-qty input {
+.qty-input{
   all: unset; /* ← СКИДАЄ ВСЕ */
   width: 32px !important;
   min-width: 32px !important;
@@ -116,7 +116,7 @@ a {
   appearance: textfield;
 }
 
-.cart-item-qty input:focus {
+.qty-input:focus {
   outline: none;
   border-bottom-color: var(--accent);
 }
