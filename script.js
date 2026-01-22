@@ -258,12 +258,18 @@ document.getElementById("closeModal").onclick = closeModal;
    CART
 ======================= */
 function addToCart(product) {
-  const item = cart.find(i => i.id === product.id && i.size === size);
-  if (item) {
-    item.qty++;
-  } else {
-    cart.push({ id: product.id, size: size, qty: 1 });
+  const size = document.getElementById("sizeSelect").value;
+
+  // Якщо товар має sizes і розмір не вибрано — блокуємо
+  if (product.sizes && product.sizes.length > 0 && !size) {
+    alert("Оберіть розмір перед додаванням в кошик.");
+    return;
   }
+
+  const item = cart.find(i => i.id === product.id && i.size === size);
+
+  if (item) item.qty++;
+  else cart.push({ id: product.id, size, qty: 1 });
   saveCart();
 }
 
