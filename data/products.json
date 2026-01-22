@@ -3,22 +3,45 @@
     {
       "id": "sticker_lisnycha",
       "name": "Стікер обкладинки альбому Трускавецького Лісництва",
-      "type": "stickers",
-      "subtype": "vinyl",
+      "type": "Стікери",
+      "subtype": "Вінілові",
       "price": 20,
       "status": "in_stock",
       "image": "assets/sticker_lisnycha.png",
       "description": "Вініловий стікер 3×3 см"
     },
     {
-      "id": "lofi_girl",
+      "id": "test_item2",
+      "name": "Lo-Fi Girl 2",
+      "type": "Одяг",
+      "subtype": "Футболки",
+      "price": 350,
+      "sizes": ["S", "M", "L", "XL"]
+      "status": "in_stock",
+      "image": "assets/lofi_girl.png",
+      "description": "Футболка тест 2"
+    },
+    {
+      "id": "test_item",
       "name": "Lo-Fi Girl",
-      "type": "clothes",
-      "subtype": "tshirt",
-      "price": 150,
+      "type": "Одяг",
+      "subtype": "Футболки",
+      "price": 400,
+      "sizes": ["S", "M", "L"]
       "status": "out_of_stock",
       "image": "assets/lofi_girl.png",
       "description": "Футболка тест"
+    },
+    {
+      "id": "test_item3",
+      "name": "тест передзамовлення",
+      "type": "Одяг",
+      "subtype": "Худі",
+      "price": 400,
+      "sizes": ["S", "M", "L", "XL"]
+      "status": "preorder",
+      "image": "assets/lofi_girl.png",
+      "description": "Худі передзамовлення тест"
     }
   ]
 }
