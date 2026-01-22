@@ -19,7 +19,7 @@
 }
 
 .qty-input {
-  width: 60px; /* можна змінити на 40px / 50px */
+  width: 40px; /* можна змінити на 40px / 50px */
   padding: 6px 8px;
   border-radius: 8px;
   border: 1px solid #ccc;
