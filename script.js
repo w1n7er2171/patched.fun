@@ -115,7 +115,7 @@ function openModal(product) {
 
   const btn = document.getElementById("addToCart");
   btn.disabled = product.status === "out_of_stock";
-  btn.innerText = btn.disabled ? "Немає в наявності" : "Додати в корзину";
+  btn.innerText = btn.disabled ? "Немає в наявності" : "Додати в кошик";
 
   document.body.style.overflow = "hidden";
 }
