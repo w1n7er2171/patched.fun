@@ -3,7 +3,7 @@
   --card: #181818;
   --text: #f2f2f2;
   --muted: #9a9a9a;
-  --accent: #ff3c00;
+  --accent: #ff7a00;
 
   --radius: 14px;
   --shadow: 0 10px 30px rgba(0,0,0,.25);
@@ -376,11 +376,19 @@ html, body {
 button {
   background: var(--accent);
   border: none;
-  color: white;
+  color: #fff;
   padding: 12px 16px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+button:active {
+  filter: brightness(0.95);
 }
 
 button:disabled {
