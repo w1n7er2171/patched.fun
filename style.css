@@ -108,6 +108,8 @@ a {
   align-items: center;
   justify-content: center;
 
+  padding: 0;
+
   text-align: center;
   line-height: 1;
 
@@ -125,6 +127,16 @@ a {
 .qty-input:focus {
   outline: none;
   border-bottom-color: var(--accent);
+}
+
+.qty-input::-webkit-inner-spin-button,
+.qty-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty-input[type=number] {
+  -moz-appearance: textfield;
 }
 
 .cart-item-price {
