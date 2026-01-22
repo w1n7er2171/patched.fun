@@ -148,10 +148,13 @@ function changeQty(id, delta) {
 }
 
 function saveCart() {
-  // Зберігаємо в localStorage тільки для поточного сеансу
+ // Зберігаємо в localStorage тільки для поточного сеансу
   sessionStorage.setItem("cart", JSON.stringify(cart));
-
   renderCart();
+
+  const count = cart.reduce((acc, item) => acc + item.qty, 0);
+  document.getElementById("cartCount").innerText = count;
+
   openCartBtn.classList.toggle("hidden", cart.length === 0);
 }
 
