@@ -137,4 +137,90 @@ function renderCart() {
 }
 
 function changeQty(id, delta) {
-  const item = cart.f
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+
+  item.qty += delta;
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.id !== id);
+  }
+  saveCart();
+}
+
+function saveCart() {
+  // Зберігаємо в localStorage тільки для поточного сеансу
+  sessionStorage.setItem("cart", JSON.stringify(cart));
+
+  renderCart();
+  openCartBtn.classList.toggle("hidden", cart.length === 0);
+}
+
+/* =======================
+   CART MODAL
+======================= */
+openCartBtn.onclick = () => {
+  cartModal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+
+  requestAnimationFrame(() => {
+    cartModal.classList.add("show");
+    overlay.classList.add("show");
+  });
+
+  renderCart();
+  document.body.style.overflow = "hidden";
+};
+
+document.getElementById("closeCart").onclick = closeCart;
+
+function closeCart() {
+  cartModal.classList.remove("show");
+  overlay.classList.remove("show");
+
+  setTimeout(() => {
+    cartModal.classList.add("hidden");
+  }, 250);
+
+  document.body.style.overflow = "";
+}
+
+/* overlay закриває все */
+overlay.onclick = () => {
+  closeModal();
+  closeCart();
+};
+
+/* =======================
+   HASH OPEN
+======================= */
+function restoreFromHash() {
+  const id = location.hash.replace("#", "");
+  if (!id) return;
+
+  const product = products.find(p => p.id === id);
+  if (product) openModal(product);
+}
+
+/* =======================
+   BUTTONS
+======================= */
+document.getElementById("addToCart").onclick = () => {
+  if (!currentProduct) return;
+  addToCart(currentProduct);
+  closeModal();
+};
+
+/* =======================
+   TELEGRAM
+======================= */
+checkoutBtn.onclick = () => {
+  const payload = btoa(JSON.stringify({ items: cart }));
+  window.open(
+    `https://t.me/patcheddotfunbot?start=${payload}`,
+    "_blank"
+  );
+
+  // Очищаємо корзину після замовлення
+  cart = [];
+  saveCart();
+};
