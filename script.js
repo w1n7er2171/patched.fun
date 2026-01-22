@@ -14,6 +14,15 @@ let filteredProducts = [];
 let currentProduct = null;
 let cart = []; // ← тепер завжди чиста корзина при перезавантаженні
 
+const sizeWrapper = document.getElementById("sizeWrapper");
+
+if (product.sizes?.length) {
+  sizeWrapper.style.display = "block";
+} else {
+  sizeWrapper.style.display = "none";
+}
+
+
 /* =======================
    LOAD PRODUCTS
 ======================= */
@@ -252,7 +261,7 @@ document.getElementById("closeModal").onclick = closeModal;
 /* =======================
    CART
 ======================= */
-function addToCart(product) {
+function addToCart(product, size = null) {
   const item = cart.find(i => i.id === product.id && i.size === size);
 
   if (item) item.qty++;
@@ -260,6 +269,7 @@ function addToCart(product) {
 
   saveCart();
 }
+
 
 function renderCart() {
   const el = document.getElementById("cartItems");
