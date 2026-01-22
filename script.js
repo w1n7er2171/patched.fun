@@ -190,6 +190,7 @@ function showSkeleton() {
    PRODUCT MODAL
 ======================= */
 function openModal(product) {
+  console.log(product.id, product.sizes);
   history.pushState(null, "", `#${product.id}`);
   currentProduct = product;
 
