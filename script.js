@@ -20,16 +20,33 @@ let cart = []; // ← тепер завжди чиста корзина при �
 showSkeleton();
 
 fetch("data/products.json")
-  .then(r => r.json())
+  .then(r => {
+    if (!r.ok) throw new Error("HTTP error " + r.status);
+    return r.json();
+  })
   .then(data => {
     products = data.products;
-    filteredProducts = products; // важливо
+    filteredProducts = products;
+
     populateTypeFilter();
     renderProducts();
     restoreFromHash();
     saveCart();
+  })
+  .catch(err => {
+    console.error("Failed to load products.json:", err);
+    showError("Не вдалося завантажити товари. Перевір products.json.");
   });
 
+function showError(message) {
+  const preorderEl = document.getElementById("productsPreorder");
+  const inStockEl = document.getElementById("productsInStock");
+  const outStockEl = document.getElementById("productsOutStock");
+
+  preorderEl.innerHTML = `<p class="error-text">${message}</p>`;
+  inStockEl.innerHTML = `<p class="error-text">${message}</p>`;
+  outStockEl.innerHTML = `<p class="error-text">${message}</p>`;
+}
 /* =======================
    FILTERS
 ======================= */
