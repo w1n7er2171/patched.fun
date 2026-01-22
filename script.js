@@ -112,6 +112,9 @@ function renderCart() {
 
   cart.forEach(item => {
     const product = products.find(p => p.id === item.id);
+
+    if (!product) return; // ← ОЦЕ КРИТИЧНО
+
     const sum = product.price * item.qty;
     total += sum;
 
@@ -128,6 +131,7 @@ function renderCart() {
 
   document.getElementById("cartTotal").innerText = total;
 }
+
 
 function changeQty(id, delta) {
   const item = cart.find(i => i.id === id);
