@@ -13,15 +13,6 @@ let filteredProducts = [];
 let currentProduct = null;
 let cart = []; // ← тепер завжди чиста корзина при перезавантаженні
 
-const sizeWrapper = document.getElementById("sizeWrapper");
-
-if (product.sizes?.length) {
-  sizeWrapper.style.display = "block";
-} else {
-  sizeWrapper.style.display = "none";
-}
-
-
 /* =======================
    LOAD PRODUCTS
 ======================= */
@@ -194,6 +185,7 @@ function showSkeleton() {
   });
 }
 
+
 /* =======================
    PRODUCT MODAL
 ======================= */
@@ -209,37 +201,43 @@ function openModal(product) {
     overlay.classList.add("show");
   });
 
-  document.getElementById("modalImage").src = product.image;
-  document.getElementById("modalName").innerText = product.name;
-  document.getElementById("modalDescription").innerText = product.description;
-  document.getElementById("modalPrice").innerText = product.price + " грн";
-  document.getElementById("modalStatus").innerText =
+  // контент
+  modalImage.src = product.image || "";
+  modalName.innerText = product.name;
+  modalDescription.innerText = product.description;
+  modalPrice.innerText = product.price + " грн";
+  modalStatus.innerText =
     product.status === "low_stock"
       ? "Закінчується"
       : product.status === "out_of_stock"
       ? "Немає в наявності"
       : "В наявності";
 
-   // size select
+  // ⬇️ РОЗМІРИ — ТІЛЬКИ ТУТ
+  const sizeWrapper = document.getElementById("sizeWrapper");
   const sizeSelect = document.getElementById("sizeSelect");
+
   sizeSelect.innerHTML = "";
 
-  if (product.sizes && product.sizes.length > 0) {
+  if (product.sizes?.length) {
+    sizeWrapper.style.display = "block";
     sizeSelect.innerHTML = `<option value="">Оберіть розмір</option>`;
     product.sizes.forEach(s => {
       sizeSelect.innerHTML += `<option value="${s}">${s}</option>`;
     });
-    sizeSelect.parentElement.style.display = "block";
   } else {
-    sizeSelect.parentElement.style.display = "none";
+    sizeWrapper.style.display = "none";
   }
-   
-  const btn = document.getElementById("addToCart");
-  btn.disabled = product.status === "out_of_stock";
-  btn.innerText = btn.disabled ? "Немає в наявності" : "Додати в кошик";
+
+  // кнопка
+  addToCart.disabled = product.status === "out_of_stock";
+  addToCart.innerText = addToCart.disabled
+    ? "Немає в наявності"
+    : "Додати в кошик";
 
   document.body.style.overflow = "hidden";
 }
+
 
 function closeModal() {
   history.pushState(null, "", location.pathname);
