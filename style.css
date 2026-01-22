@@ -44,6 +44,18 @@ a {
   }
 }
 
+#filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+#filters select {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+}
+
 .products-section {
   margin-bottom: 40px;
 }
