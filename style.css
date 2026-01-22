@@ -95,6 +95,10 @@ html, body {
   justify-content: center;
 }
 
+header, footer {
+  text-align: center;
+}
+
 .main-container {
   width: 100%;
   max-width: 1200px;
