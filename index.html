@@ -63,9 +63,12 @@
   
     <!-- Модальне вікно -->
     <div id="modal" class="modal hidden">
-      <select id="sizeSelect">
-        <option value="">Виберіть розмір</option>
-      </select>
+      <div id="sizeWrapper" class="size-wrapper" style="display:none;">
+        <select id="sizeSelect">
+          <option value="">Виберіть розмір</option>
+        </select>
+      </div>
+    
       <button id="closeModal" class="close">×</button>
       <img id="modalImage" />
       <h2 id="modalName"></h2>
@@ -74,6 +77,7 @@
       <p id="modalPrice"></p>
       <button id="addToCart">Додати в корзину</button>
     </div>
+
   
     <!-- Кошик -->
   
