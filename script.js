@@ -144,7 +144,7 @@ function renderCart() {
          <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
        </div>
    
-       <div class="cart-item-price">= ${sum} грн</div>
+       <div class="cart-item-price">= ${formattedSum} грн</div>
    
        <button class="remove-btn" onclick="removeFromCart('${item.id}')">x</button>
      </div>
