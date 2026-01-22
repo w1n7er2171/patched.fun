@@ -253,15 +253,6 @@ document.getElementById("closeModal").onclick = closeModal;
    CART
 ======================= */
 function addToCart(product) {
-  const sizeSelect = document.getElementById("sizeSelect");
-  const size = sizeSelect ? sizeSelect.value : "";
-
-  // Якщо товар має sizes — але розмір не вибрано
-  if (product.sizes && product.sizes.length > 0 && !size) {
-    alert("Оберіть розмір перед додаванням в кошик.");
-    return;
-  }
-
   const item = cart.find(i => i.id === product.id && i.size === size);
 
   if (item) item.qty++;
