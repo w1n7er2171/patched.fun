@@ -16,7 +16,7 @@
       "type": "Одяг",
       "subtype": "Футболки",
       "price": 350,
-      "sizes": ["S", "M", "L", "XL"]
+      "sizes": ["S", "M", "L", "XL"],
       "status": "in_stock",
       "image": "assets/lofi_girl.png",
       "description": "Футболка тест 2"
@@ -27,7 +27,7 @@
       "type": "Одяг",
       "subtype": "Футболки",
       "price": 400,
-      "sizes": ["S", "M", "L"]
+      "sizes": ["S", "M", "L"],
       "status": "out_of_stock",
       "image": "assets/lofi_girl.png",
       "description": "Футболка тест"
@@ -38,7 +38,7 @@
       "type": "Одяг",
       "subtype": "Худі",
       "price": 400,
-      "sizes": ["S", "M", "L", "XL"]
+      "sizes": ["S", "M", "L", "XL"],
       "status": "preorder",
       "image": "assets/lofi_girl.png",
       "description": "Худі передзамовлення тест"
