@@ -106,6 +106,22 @@ function renderCart() {
   document.getElementById("cartTotal").innerText = total;
 }
 
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  item.qty += delta;
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.id !== id);
+  }
+  saveCart();
+}
+
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+  document.getElementById("openCart")
+    .classList.toggle("hidden", cart.length === 0);
+}
+
 document.getElementById("addToCart").onclick = () => {
   cart.push({ id: currentProduct.id, qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
