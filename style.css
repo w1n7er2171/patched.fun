@@ -18,6 +18,13 @@
   z-index: 12;
 }
 
+.qty-input {
+  width: 60px; /* можна змінити на 40px / 50px */
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
 
 body {
   font-family: system-ui, sans-serif;
