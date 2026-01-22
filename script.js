@@ -1,60 +1,77 @@
-const productsData = [
-  {
-    id: "sticker_lisnycha",
-    name: "Стікер обкладинка льбому ТЛ",
-    price: 20,
-    description: "Вініловий стікер 3×3 см",
-    image: "assets/sticker_lisnycha.png",
-    status: "in_stock"
-  }
-];
-
 const productsEl = document.getElementById("products");
 const modal = document.getElementById("modal");
 const overlay = document.getElementById("overlay");
 const checkoutBtn = document.getElementById("checkout");
 
+let products = [];
 let currentProduct = null;
 let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-/* Render products */
-productsData.forEach(p => {
-  if (p.status === "out_of_stock") return;
+/* Load products */
+fetch("data/products.json")
+  .then(r => r.json())
+  .then(data => {
+    products = data.products;
+    renderProducts();
+  });
 
-  const div = document.createElement("div");
-  div.className = "product";
-  div.innerHTML = `
-    <img src="${p.image}">
-    <h3>${p.name}</h3>
-    <p>${p.price} грн</p>
-  `;
-  div.onclick = () => openModal(p);
-  productsEl.appendChild(div);
-});
+function renderProducts() {
+  products.forEach(p => {
+    if (p.status === "out_of_stock") return;
 
-/* Modal */
+    const div = document.createElement("div");
+    div.className = "product";
+
+    div.innerHTML = `
+      <img src="${p.image}">
+      <h3>${p.name}</h3>
+      <p>${p.price} грн</p>
+      ${p.status === "low_stock" ? '<p class="status-low">Закінчується</p>' : ''}
+    `;
+
+    div.onclick = () => openModal(p);
+    productsEl.appendChild(div);
+  });
+}
+
+/* MODAL */
 function openModal(product) {
   currentProduct = product;
+
+  modal.classList.remove("hidden");
+  overlay.classList.remove("hidden");
+
+  requestAnimationFrame(() => {
+    modal.classList.add("show");
+    overlay.classList.add("show");
+  });
+
   document.getElementById("modalImage").src = product.image;
   document.getElementById("modalName").innerText = product.name;
   document.getElementById("modalDescription").innerText = product.description;
   document.getElementById("modalPrice").innerText = product.price + " грн";
+  document.getElementById("modalStatus").innerText =
+    product.status === "low_stock" ? "Закінчується" : "В наявності";
 
-  modal.classList.remove("hidden");
-  overlay.classList.remove("hidden");
   document.body.style.overflow = "hidden";
 }
 
 function closeModal() {
-  modal.classList.add("hidden");
-  overlay.classList.add("hidden");
+  modal.classList.remove("show");
+  overlay.classList.remove("show");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  }, 250);
+
   document.body.style.overflow = "";
 }
 
 document.getElementById("closeModal").onclick = closeModal;
 overlay.onclick = closeModal;
 
-/* Cart */
+/* CART */
 document.getElementById("addToCart").onclick = () => {
   cart.push({ id: currentProduct.id, qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
@@ -62,8 +79,11 @@ document.getElementById("addToCart").onclick = () => {
   closeModal();
 };
 
-/* Checkout → Telegram */
+/* TELEGRAM */
 checkoutBtn.onclick = () => {
   const payload = btoa(JSON.stringify({ items: cart }));
-  window.open(`https://t.me/patcheddotfunbot?start=${payload}`, "_blank");
+  window.open(
+    `https://t.me/patcheddotfunbot?start=${payload}`,
+    "_blank"
+  );
 };
