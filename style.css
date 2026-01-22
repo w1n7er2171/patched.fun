@@ -88,6 +88,7 @@
 
 body {
   display: flex;
+  font-family: sans-serif;
   justify-content: center;
 }
 
