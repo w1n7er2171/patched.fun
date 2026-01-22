@@ -110,6 +110,11 @@ function addToCart(product) {
   saveCart();
 }
 
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  saveCart();
+}
+
 function renderCart() {
   const el = document.getElementById("cartItems");
   el.innerHTML = "";
@@ -125,15 +130,37 @@ function renderCart() {
     el.innerHTML += `
       <div class="cart-item">
         <strong>${product.name}</strong><br>
-        <button onclick="changeQty('${item.id}', -1)">−</button>
-        ${item.qty}
-        <button onclick="changeQty('${item.id}', 1)">+</button>
+
+        <button class="remove-btn" onclick="removeFromCart('${item.id}')">x</button>
+
+        <input
+          type="number"
+          min="1"
+          value="${item.qty}"
+          onchange="setQty('${item.id}', this.value)"
+        />
+
         = ${sum} грн
       </div>
     `;
   });
 
   document.getElementById("cartTotal").innerText = total;
+}
+
+function setQty(id, value) {
+  const qty = parseInt(value);
+
+  if (!qty || qty <= 0) {
+    removeFromCart(id);
+    return;
+  }
+
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+
+  item.qty = qty;
+  saveCart();
 }
 
 function changeQty(id, delta) {
