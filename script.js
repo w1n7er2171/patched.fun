@@ -384,9 +384,10 @@ function closeCart() {
 
 /* overlay закриває все */
 overlay.onclick = () => {
-  closeModal();
-  closeCart();
+  if (modal.classList.contains("show")) closeModal();
+  if (cartModal.classList.contains("show")) closeCart();
 };
+
 
 /* =======================
    HASH OPEN
