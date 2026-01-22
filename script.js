@@ -146,9 +146,10 @@ function saveCart() {
 }
 
 document.getElementById("addToCart").onclick = () => {
-  cart.push({ id: currentProduct.id, qty: 1 });
+  addToCart(currentProduct);
+  /*cart.push({ id: currentProduct.id, qty: 1 });
   localStorage.setItem("cart", JSON.stringify(cart));
-  checkoutBtn.classList.remove("hidden");
+  checkoutBtn.classList.remove("hidden");*/
   closeModal();
 };
 
