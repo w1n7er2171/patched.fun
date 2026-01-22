@@ -40,10 +40,14 @@ function renderProducts() {
     const div = document.createElement("div");
     div.className = "product";
 
+    if (p.status === "out_of_stock") {
+      div.classList.add("out-of-stock");
+    }
+
     div.innerHTML = `
       <img src="${p.image}">
       <h3>${p.name}</h3>
-      <p>${p.price} грн</p>
+      <p>${p.price.toLocaleString("uk-UA")} грн</p>
       ${p.status === "low_stock" ? '<p class="status-low">Закінчується</p>' : ''}
     `;
 
@@ -57,7 +61,19 @@ function renderProducts() {
       inStockEl.appendChild(div);
     }
   });
+
+  // якщо секція пуста — показати текст
+  if (preorderEl.children.length === 0) {
+    preorderEl.innerHTML = `<p class="empty-text">Товари відсутні</p>`;
+  }
+  if (inStockEl.children.length === 0) {
+    inStockEl.innerHTML = `<p class="empty-text">Товари відсутні</p>`;
+  }
+  if (outStockEl.children.length === 0) {
+    outStockEl.innerHTML = `<p class="empty-text">Товари відсутні</p>`;
+  }
 }
+
 
 function showSkeleton() {
   const sections = ["productsPreorder", "productsInStock", "productsOutStock"];
