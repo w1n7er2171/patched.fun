@@ -195,6 +195,25 @@ function openModal(product) {
       ? "Немає в наявності"
       : "В наявності";
 
+   // size select
+  const sizeSelect = document.getElementById("sizeSelect");
+  sizeSelect.innerHTML = "";
+
+  if (product.sizes && product.sizes.length > 0) {
+    sizeSelect.disabled = false;
+
+    sizeSelect.innerHTML = `<option value="">Виберіть розмір</option>`;
+    product.sizes.forEach(size => {
+      const opt = document.createElement("option");
+      opt.value = size;
+      opt.innerText = size;
+      sizeSelect.appendChild(opt);
+    });
+  } else {
+    sizeSelect.disabled = true;
+    sizeSelect.innerHTML = `<option value="">Розмір не потрібен</option>`;
+  }
+   
   const btn = document.getElementById("addToCart");
   btn.disabled = product.status === "out_of_stock";
   btn.innerText = btn.disabled ? "Немає в наявності" : "Додати в кошик";
