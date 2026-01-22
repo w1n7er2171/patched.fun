@@ -241,17 +241,12 @@ document.getElementById("closeModal").onclick = closeModal;
    CART
 ======================= */
 function addToCart(product) {
-  const item = cart.find(i => i.id === product.id);
+  const item = cart.find(i => i.id === product.id && i.size === size);
   if (item) {
     item.qty++;
   } else {
-    cart.push({ id: product.id, qty: 1 });
+    cart.push({ id: product.id, size: size, qty: 1 });
   }
-  saveCart();
-}
-
-function removeFromCart(id) {
-  cart = cart.filter(i => i.id !== id);
   saveCart();
 }
 
@@ -273,11 +268,14 @@ function renderCart() {
        <div class="cart-item-left">
    
          <div class="cart-item-info">
-           <img src="${product.image}" alt="${product.name}">
-           <strong>${product.name}</strong>
+            <img src="${product.image}" alt="${product.name}">
+              <div>
+                <strong>${product.name}</strong>
+                ${item.size ? `<span class="cart-size">Розмір: ${item.size}</span>` : ""}
+              </div>
          </div>
    
-         <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+         <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', -1)">−</button>
          <input
            class="qty-input"
            type="number"
@@ -285,7 +283,7 @@ function renderCart() {
            value="${item.qty}"
            onchange="setQty('${item.id}', this.value)"
          />
-         <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+         <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', 1)">+</button>
    
        </div>
    
@@ -293,7 +291,7 @@ function renderCart() {
          = ${formattedSum} грн
        </div>
    
-       <button class="remove-btn" onclick="removeFromCart('${item.id}')">×</button>
+       <button class="remove-btn" onclick="removeFromCart('${item.id}', '${item.size}')">×</button>
      </div>
     `;
   });
@@ -305,11 +303,11 @@ function setQty(id, value) {
   const qty = parseInt(value);
 
   if (!qty || qty <= 0) {
-    removeFromCart(id);
+    removeFromCart(id, size);
     return;
   }
 
-  const item = cart.find(i => i.id === id);
+  const item = cart.find(i => i.id === id && i.size === size);
   if (!item) return;
 
   item.qty = qty;
@@ -317,13 +315,18 @@ function setQty(id, value) {
 }
 
 function changeQty(id, delta) {
-  const item = cart.find(i => i.id === id);
+  const item = cart.find(i => i.id === id && i.size === size);
   if (!item) return;
 
   item.qty += delta;
   if (item.qty <= 0) {
-    cart = cart.filter(i => i.id !== id);
+    cart = cart.filter(i => !(i.id === id && i.size === size));
   }
+  saveCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => !(i.id === id && i.size === size));
   saveCart();
 }
 
@@ -389,7 +392,16 @@ function restoreFromHash() {
 ======================= */
 document.getElementById("addToCart").onclick = () => {
   if (!currentProduct) return;
-  addToCart(currentProduct);
+   
+  const size = document.getElementById("sizeSelect").value;
+
+  // якщо потрібен розмір, але не вибрано — не додаємо
+  if (currentProduct.sizes && currentProduct.sizes.length > 0 && !size) {
+    alert("Оберіть розмір");
+    return;
+  }
+
+  addToCart(currentProduct, size);
   closeModal();
 };
 
