@@ -33,6 +33,15 @@ a {
     max-height: 90vh;
     overflow-y: auto;
   }
+  
+  .cart-item-info img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cart-item-info strong {
+    max-width: 100px;
+  }
 }
 
 .products-section {
