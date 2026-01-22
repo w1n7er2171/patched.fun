@@ -1,10 +1,10 @@
 const productsData = [
   {
-    id: "samurai_cat",
-    name: "Samurai Cat",
-    price: 120,
-    description: "Вініловий стікер 7×7 см",
-    image: "assets/products/samurai_cat.png",
+    id: "sticker_lisnycha",
+    name: "Стікер обкладинка льбому ТЛ",
+    price: 20,
+    description: "Вініловий стікер 3×3 см",
+    image: "assets/sticker_lisnycha.png",
     status: "in_stock"
   }
 ];
@@ -65,5 +65,5 @@ document.getElementById("addToCart").onclick = () => {
 /* Checkout → Telegram */
 checkoutBtn.onclick = () => {
   const payload = btoa(JSON.stringify({ items: cart }));
-  window.open(`https://t.me/YOUR_BOT_USERNAME?start=${payload}`, "_blank");
+  window.open(`https://t.me/patcheddotfunbot?start=${payload}`, "_blank");
 };
