@@ -125,6 +125,7 @@ function renderCart() {
     if (!product) return;
 
     const sum = product.price * item.qty;
+    const formattedSum = sum.toLocaleString("uk-UA");
     total += sum;
 
     el.innerHTML += `
@@ -150,7 +151,7 @@ function renderCart() {
     `;
   });
 
-  document.getElementById("cartTotal").innerText = total;
+  document.getElementById("cartTotal").innerText = total.toLocaleString("uk-UA");
 }
 
 function setQty(id, value) {
