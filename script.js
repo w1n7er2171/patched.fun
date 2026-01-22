@@ -296,22 +296,18 @@ function renderCart() {
          </div>
    
          <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', -1)">−</button>
+
          <input
            class="qty-input"
            type="number"
            min="1"
            value="${item.qty}"
-           onchange="setQty('${item.id}', this.value)"
+           onchange="setQty('${item.id}', '${item.size}', this.value)"
          />
+         
          <button class="qty-btn" onclick="changeQty('${item.id}', '${item.size}', 1)">+</button>
-   
-       </div>
-   
-       <div class="cart-item-price">
-         = ${formattedSum} грн
-       </div>
-   
-       <button class="remove-btn" onclick="removeFromCart('${item.id}', '${item.size}')">×</button>
+         
+         <button class="remove-btn" onclick="removeFromCart('${item.id}', '${item.size}')">×</button>
      </div>
     `;
   });
@@ -319,7 +315,7 @@ function renderCart() {
   document.getElementById("cartTotal").innerText = total.toLocaleString("uk-UA");
 }
 
-function setQty(id, value) {
+function setQty(id, size, value) {
   const qty = parseInt(value);
 
   if (!qty || qty <= 0) {
@@ -334,21 +330,26 @@ function setQty(id, value) {
   saveCart();
 }
 
-function changeQty(id, delta) {
+function changeQty(id, size, delta) {
   const item = cart.find(i => i.id === id && i.size === size);
   if (!item) return;
 
   item.qty += delta;
+
   if (item.qty <= 0) {
-    cart = cart.filter(i => !(i.id === id && i.size === size));
+    removeFromCart(id, size);
+    return;
   }
+
   saveCart();
 }
 
-function removeFromCart(id) {
+
+function removeFromCart(id, size) {
   cart = cart.filter(i => !(i.id === id && i.size === size));
   saveCart();
 }
+
 
 function saveCart() {
  // Зберігаємо в localStorage тільки для поточного сеансу
