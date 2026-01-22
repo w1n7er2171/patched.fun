@@ -15,15 +15,16 @@
 }
 
 #cartModal {
-  width: 480px; /* ширина кошика */
-  max-width: 90vw; /* щоб на мобільних не виходило за екран */
+  width: 520px;
+  max-width: 92vw;
   padding: 20px;
   border-radius: 20px;
   background: #fff;
+
   position: fixed;
-  right: 20px;
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   z-index: 20;
 }
 
