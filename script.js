@@ -6,7 +6,11 @@ const overlay = document.getElementById("overlay");
 const openCartBtn = document.getElementById("openCart");
 const checkoutBtn = document.getElementById("checkout");
 
+const typeFilter = document.getElementById("typeFilter");
+const subtypeFilter = document.getElementById("subtypeFilter");
+
 let products = [];
+let filteredProducts = [];
 let currentProduct = null;
 let cart = []; // ← тепер завжди чиста корзина при перезавантаженні
 
@@ -19,13 +23,80 @@ fetch("data/products.json")
   .then(r => r.json())
   .then(data => {
     products = data.products;
+    filteredProducts = products; // важливо
+    populateTypeFilter();
     renderProducts();
     restoreFromHash();
     saveCart();
   });
 
 /* =======================
-   PRODUCTS
+   FILTERS
+======================= */
+function populateTypeFilter() {
+  const types = [...new Set(products.map(p => p.type))];
+
+  types.forEach(type => {
+    const option = document.createElement("option");
+    option.value = type;
+    option.innerText = capitalize(type);
+    typeFilter.appendChild(option);
+  });
+}
+
+function populateSubtypeFilter(type) {
+  subtypeFilter.innerHTML = `<option value="">Всі підтипи</option>`;
+
+  const subtypes = [...new Set(
+    products
+      .filter(p => p.type === type)
+      .map(p => p.subtype)
+  )];
+
+  subtypes.forEach(sub => {
+    const option = document.createElement("option");
+    option.value = sub;
+    option.innerText = capitalize(sub);
+    subtypeFilter.appendChild(option);
+  });
+
+  subtypeFilter.disabled = subtypes.length === 0;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+typeFilter.onchange = () => {
+  const type = typeFilter.value;
+
+  if (!type) {
+    filteredProducts = products;
+    subtypeFilter.disabled = true;
+    subtypeFilter.value = "";
+  } else {
+    filteredProducts = products.filter(p => p.type === type);
+    populateSubtypeFilter(type);
+  }
+
+  renderProducts();
+};
+
+subtypeFilter.onchange = () => {
+  const type = typeFilter.value;
+  const subtype = subtypeFilter.value;
+
+  if (!subtype) {
+    filteredProducts = products.filter(p => p.type === type);
+  } else {
+    filteredProducts = products.filter(p => p.type === type && p.subtype === subtype);
+  }
+
+  renderProducts();
+}
+
+/* =======================
+   PRODUCTS (with sections)
 ======================= */
 function renderProducts() {
   const preorderEl = document.getElementById("productsPreorder");
@@ -36,7 +107,8 @@ function renderProducts() {
   inStockEl.innerHTML = "";
   outStockEl.innerHTML = "";
 
-  products.forEach(p => {
+  // render only filteredProducts
+  filteredProducts.forEach(p => {
     const div = document.createElement("div");
     div.className = "product";
 
@@ -73,7 +145,6 @@ function renderProducts() {
     outStockEl.innerHTML = `<p class="empty-text">Товари відсутні</p>`;
   }
 }
-
 
 function showSkeleton() {
   const sections = ["productsPreorder", "productsInStock", "productsOutStock"];
