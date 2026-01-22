@@ -21,17 +21,21 @@
     <p>Магазин мерчандайзу moshpizza</p>
   </div>
 
-  <section>
-    <h2>В наявності</h2>
-    <p>На даний момент товари відсутні.</p>
-    <p>За детальною інформацією звертайтеся <a href=https://t.me/patcheddotfunbot target="_blank" rel="noopener noreferrer">сюди</a>.</p>
-  </section>
-
-  <section>
+  <div id="preorder" class="products-section">
     <h2>Передзамовлення</h2>
-    <p>На даний момент товари відсутні.</p>
-    <p>За детальною інформацією звертайтеся <a href=https://t.me/patcheddotfunbot target="_blank" rel="noopener noreferrer">сюди</a>.</p>
-  </section>
+    <div class="products" id="productsPreorder"></div>
+  </div>
+  
+  <div id="inStock" class="products-section">
+    <h2>В наявності</h2>
+    <div class="products" id="productsInStock"></div>
+  </div>
+  
+  <div id="outStock" class="products-section">
+    <h2>Закінчилось</h2>
+    <div class="products" id="productsOutStock"></div>
+  </div>
+
 
   <!-- Сітка товарів -->
   <div id="products" class="products">
