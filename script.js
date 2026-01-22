@@ -217,18 +217,13 @@ function openModal(product) {
   sizeSelect.innerHTML = "";
 
   if (product.sizes && product.sizes.length > 0) {
-    sizeSelect.disabled = false;
-
-    sizeSelect.innerHTML = `<option value="">Виберіть розмір</option>`;
-    product.sizes.forEach(size => {
-      const opt = document.createElement("option");
-      opt.value = size;
-      opt.innerText = size;
-      sizeSelect.appendChild(opt);
+    sizeSelect.innerHTML = `<option value="">Оберіть розмір</option>`;
+    product.sizes.forEach(s => {
+      sizeSelect.innerHTML += `<option value="${s}">${s}</option>`;
     });
+    sizeSelect.parentElement.style.display = "block";
   } else {
-    sizeSelect.disabled = true;
-    sizeSelect.innerHTML = `<option value="">Розмір не потрібен</option>`;
+    sizeSelect.parentElement.style.display = "none";
   }
    
   const btn = document.getElementById("addToCart");
@@ -258,9 +253,10 @@ document.getElementById("closeModal").onclick = closeModal;
    CART
 ======================= */
 function addToCart(product) {
-  const size = document.getElementById("sizeSelect").value;
+  const sizeSelect = document.getElementById("sizeSelect");
+  const size = sizeSelect ? sizeSelect.value : "";
 
-  // Якщо товар має sizes і розмір не вибрано — блокуємо
+  // Якщо товар має sizes — але розмір не вибрано
   if (product.sizes && product.sizes.length > 0 && !size) {
     alert("Оберіть розмір перед додаванням в кошик.");
     return;
@@ -270,6 +266,7 @@ function addToCart(product) {
 
   if (item) item.qty++;
   else cart.push({ id: product.id, size, qty: 1 });
+
   saveCart();
 }
 
