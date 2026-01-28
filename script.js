@@ -480,31 +480,34 @@ checkoutBtn.onclick = () => {
   }, 200);
 
   // 3. Кнопка "Скопіювати та замовити"
-  singleOrderBtn.onclick = async () => {
-    try {
-      // Копіюємо тільки технічний код
-      await navigator.clipboard.writeText(textToCopy);
-      
-      singleOrderBtn.innerText = "✅ Скопійовано!";
-      singleOrderBtn.style.backgroundColor = "#28a745";
+  singleOrderBtn.onclick = () => {
+    // 1. Копіюємо текст (без await, щоб не переривати потік)
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      console.log("Код скопійовано");
+    }).catch(err => {
+      console.error("Помилка копіювання:", err);
+    });
 
-      // Очищаємо кошик
-      cart = [];
-      saveCart();
+    // 2. МИТТЄВО відкриваємо Telegram (це не заблокує браузер)
+    const tgWindow = window.open(`https://t.me/patcheddotfunbot`, "_blank");
 
-      // 4. Закриваємо модалку і відкриваємо Telegram
-      setTimeout(() => {
-        // Закриваємо модалку (викликаємо вашу функцію)
-        closeOrderModalFunc();
-        
-        // Відкриваємо бота
-        window.open(`https://t.me/patcheddotfunbot`, "_blank");
-      }, 600); // невелика затримка, щоб користувач встиг побачити "Скопійовано"
-
-    } catch (err) {
-      console.error(err);
-      alert("Не вдалося скопіювати код. Спробуйте ще раз.");
+    // 3. Якщо вікно все ж не відкрилося (блокувальник реклами)
+    if (!tgWindow) {
+      location.href = `https://t.me/patcheddotfunbot`; // Відкриваємо в тій же вкладці як запасний варіант
     }
+
+    // 4. Очищаємо кошик та закриваємо модалку
+    cart = [];
+    saveCart();
+    
+    // Візуальний фідбек перед тим як користувач піде
+    singleOrderBtn.innerText = "✅ Скопійовано! Переходимо...";
+    singleOrderBtn.style.backgroundColor = "#28a745";
+
+    // Закриваємо модалку через мить
+    setTimeout(() => {
+      closeOrderModalFunc();
+    }, 500);
   };
 };
 /* =======================
