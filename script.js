@@ -500,6 +500,8 @@ checkoutBtn.onclick = () => {
     cart = [];
     saveCart();
     closeModal();
+    orderModal.classList.remove("show");
+    orderModal.classList.add("hidden");
     
     // Візуальний фідбек перед тим як користувач піде
     singleOrderBtn.innerText = "✅ Скопійовано! Переходимо...";
