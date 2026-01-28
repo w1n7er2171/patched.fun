@@ -448,7 +448,7 @@ document.getElementById("addToCart").onclick = () => {
 checkoutBtn.onclick = () => {
   if (!cart.length) return;
 
-  const order = {
+  /*const order = {
     items: cart.map(i => ({
       id: i.id,
       qty: i.qty,
@@ -463,6 +463,23 @@ checkoutBtn.onclick = () => {
 
   window.open(
     `https://t.me/patcheddotfunbot?start=${payload}`,
+    "_blank"
+  );*/
+
+   // 1. Формуємо текст замовлення (красивий, зрозумілий людині)
+  let orderText = `Прошу прийняти замовлення:\n`;
+  cart.forEach(item => {
+    orderText += `• ${item.id} [${item.size || '?'}] — ${item.qty} шт.\n`;
+  });
+  
+  // 2. Кодуємо текст для URL
+  const encodedText = encodeURIComponent(orderText);
+  const botUsername = 'patcheddotfunbot';
+
+  // 3. Відкриваємо вікно "Share"
+  // Воно запропонує вибрати чат. Користувач вибере вашого бота.
+  window.open(
+    `https://t.me/share/url?url=https://t.me/${botUsername}&text=${encodedText}`,
     "_blank"
   );
 
