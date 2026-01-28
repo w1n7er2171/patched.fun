@@ -443,10 +443,112 @@ document.getElementById("addToCart").onclick = () => {
 };
 
 /* =======================
-   TELEGRAM
+   ORDER CONFIRMATION LOGIC
 ======================= */
+const orderModal = document.getElementById("orderModal");
+const orderPreview = document.getElementById("orderPreview");
+const singleOrderBtn = document.getElementById("singleOrderBtn");
+
 checkoutBtn.onclick = () => {
   if (!cart.length) return;
+
+  let orderText = `📦 НОВЕ ЗАМОВЛЕННЯ:\n\n`;
+  let total = 0;
+  
+  cart.forEach(item => {
+    const product = products.find(p => p.id === item.id);
+    const price = product ? product.price : 0;
+    const sum = price * item.qty;
+    total += sum;
+    orderText += `• ${product ? product.name : item.id} ${item.size ? `[${item.size}]` : ''} — ${item.qty} шт. (${sum} грн)\n`;
+  });
+  
+  orderText += `\n💰 Разом до оплати: ${total} грн`;
+
+  orderPreview.innerText = orderText;
+  
+  // Закриваємо кошик і відкриваємо підтвердження
+  cartModal.classList.remove("show");
+  setTimeout(() => {
+    cartModal.classList.add("hidden");
+    orderModal.classList.remove("hidden");
+    requestAnimationFrame(() => orderModal.classList.add("show"));
+  }, 200);
+
+  singleOrderBtn.onclick = async () => {
+    try {
+      // 1. Копіюємо
+      await navigator.clipboard.writeText(orderText);
+      singleOrderBtn.innerText = "✅ Скопійовано! Переходимо...";
+      singleOrderBtn.style.backgroundColor = "#28a745";
+
+      // 2. Очищаємо кошик відразу
+      cart = [];
+      saveCart();
+
+      // 3. Через невелику паузу відкриваємо Telegram
+      setTimeout(() => {
+        window.open(`https://t.me/patcheddotfunbot`, "_blank");
+        closeOrderModalFunc();
+      }, 800);
+
+    } catch (err) {
+      alert("Не вдалося скопіювати автоматично. Будь ласка, перейдіть в Telegram та напишіть нам.");
+      window.open(`https://t.me/patcheddotfunbot`, "_blank");
+    }
+  };
+};
+
+function closeOrderModalFunc() {
+  orderModal.classList.remove("show");
+  overlay.classList.remove("show");
+  setTimeout(() => {
+    orderModal.classList.add("hidden");
+    overlay.classList.add("hidden");
+    singleOrderBtn.innerText = "Скопіювати та замовити";
+    singleOrderBtn.style.backgroundColor = "#0088cc";
+  }, 250);
+  document.body.style.overflow = "";
+}
+
+document.getElementById("closeOrderModal").onclick = closeOrderModalFunc;
+
+// Оновлений overlay.onclick
+overlay.onclick = () => {
+  if (modal.classList.contains("show")) closeModal();
+  if (cartModal.classList.contains("show")) closeCart();
+  if (orderModal.classList.contains("show")) closeOrderModalFunc();
+};
+
+// Закриття модалки замовлення
+function closeOrderModalFunc() {
+  orderModal.classList.remove("show");
+  overlay.classList.remove("show");
+  setTimeout(() => {
+    orderModal.classList.add("hidden");
+    overlay.classList.add("hidden");
+    // Скидаємо кнопки до початкового стану
+    copyOrderBtn.innerText = "1. Скопіювати замовлення";
+    copyOrderBtn.style.backgroundColor = "";
+    goToTelegramBtn.classList.add("hidden");
+  }, 250);
+  document.body.style.overflow = "";
+}
+
+document.getElementById("closeOrderModal").onclick = closeOrderModalFunc;
+
+// Оновіть функцію overlay.onclick, щоб вона закривала і нову модалку
+overlay.onclick = () => {
+  if (modal.classList.contains("show")) closeModal();
+  if (cartModal.classList.contains("show")) closeCart();
+  if (orderModal.classList.contains("show")) closeOrderModalFunc();
+};
+
+/* =======================
+   TELEGRAM
+======================= 
+checkoutBtn.onclick = () => {
+  if (!cart.length) return;*/
 
   /*const order = {
     items: cart.map(i => ({
@@ -464,7 +566,7 @@ checkoutBtn.onclick = () => {
   window.open(
     `https://t.me/patcheddotfunbot?start=${payload}`,
     "_blank"
-  );*/
+  );
 
    // 1. Формуємо текст замовлення (красивий, зрозумілий людині)
   let orderText = `Прошу прийняти замовлення:\n`;
@@ -486,4 +588,4 @@ checkoutBtn.onclick = () => {
   // Очищаємо корзину після замовлення
   cart = [];
   saveCart();
-};
+};*/
