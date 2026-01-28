@@ -499,6 +499,7 @@ checkoutBtn.onclick = () => {
     // 4. Очищаємо кошик та закриваємо модалку
     cart = [];
     saveCart();
+    closeModal();
     
     // Візуальний фідбек перед тим як користувач піде
     singleOrderBtn.innerText = "✅ Скопійовано! Переходимо...";
